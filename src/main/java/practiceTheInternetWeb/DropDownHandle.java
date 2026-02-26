@@ -1,17 +1,23 @@
 package practiceTheInternetWeb;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class DropDownHandle {
 	
 	WebDriver driver;   //Page class codes
+	WebDriverWait wait;
 	public DropDownHandle(WebDriver driver){
 		this.driver = driver;
+		wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		PageFactory.initElements(driver, this);
 	}
 	@FindBy(xpath = "//a[@href=\"/dropdown\"]")
@@ -19,10 +25,19 @@ public class DropDownHandle {
 	@FindBy(id = "dropdown")
 	WebElement dropdownLink;
 	
+	public void waitForClickable(WebElement element) {
+		wait.until(ExpectedConditions.elementToBeClickable(element));
+		element.click();
+	}
+	public void waitForVisibility(WebElement element) {
+		wait.until(ExpectedConditions.visibilityOf(element));
+	}
+	
 	public void clickOnDropdown() {
-		dropdown.click();
+		waitForClickable(dropdown);
 	}
 	public void clickOnLink() {
+		waitForVisibility(dropdownLink);
 		dropdownLink.click();
 	}
 	public void selectOnVisibleText() {  //We can create this on utilities.
